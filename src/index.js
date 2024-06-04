@@ -1,9 +1,22 @@
 import dotenv from 'dotenv'
 import connectDb from "./db/server.js";
+import { app } from './app.js';
 
 dotenv.config();
 
+const port = process.env.PORT || 3000
+
 connectDb()
+.then(()=>{
+    app.listen(port,()=>{
+        console.log(`Server is running on port ${port}`)
+    })
+
+    app.on('error',(error)=>{
+        console.log('error ',error);
+    })
+})
+.catch((error)=> console.log('Error in DataBase connection !! ', error))
 
 
 
