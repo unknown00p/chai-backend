@@ -38,12 +38,16 @@ const userSchema = new Schema({
             type: Schema.Types.ObjectId,
             ref: "Video"
         }
-    ]
+    ],
+
+    refreshToken:{
+        type: String
+    }
 }, { timestamps: true })
 
 userSchema.pre("save", async function incrypt(next) {
     if (!this.isModified("password")) return next()
-    this.password = bcrypt.hash(this.password, 10)
+    this.password = await bcrypt.hash(this.password, 10)
     next()
 })
 
@@ -64,6 +68,8 @@ userSchema.methods.genrateAccessToken = async function () {
         }
     )
 }
+
+console.log("in access",process.env.ACCESS_TOKEN_SECRET,);
 
 userSchema.methods.genrateRefreshToken = async function() {
     jwt.sign({
