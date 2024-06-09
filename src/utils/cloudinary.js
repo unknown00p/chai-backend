@@ -7,12 +7,7 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
-console.log(process.env.CLOUDINARY_CLOUD_NAME,);
-console.log(process.env.CLOUDINARY_API_KEY,);
-console.log(process.env.CLOUDINARY_API_SECRET,);
-
 const uploadFileToCloudinary = async(localFilePath)=>{
-    console.log('local file path ',localFilePath);
     try {
 
         if (!localFilePath) return null
@@ -21,20 +16,15 @@ const uploadFileToCloudinary = async(localFilePath)=>{
             resource_type:'auto'
         })
 
-        console.log('file Details ' , fileDetails);
+        // console.log('file Details ' , fileDetails);
+        // console.log('File uploaded successfully on cloudinary');
 
-        console.log('File uploaded successfully on cloudinary');
+        fs.unlinkSync(localFilePath)
         
         return fileDetails
 
     } catch (error) {
-        fs.unlink(localFilePath,(unlinkError)=>{
-            if (unlinkError) {
-                console.error('Error deleting local file:', unlinkError);
-            } else {
-                console.log('Local file deleted successfully');
-            }
-        })
+        fs.unlinkSync(localFilePath)
         console.log('Error cause file upload opration go faild', error);
         return null
     }
