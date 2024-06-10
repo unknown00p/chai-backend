@@ -30,4 +30,22 @@ const uploadFileToCloudinary = async(localFilePath)=>{
     }
 }
 
-export{uploadFileToCloudinary}
+const deleteFileFromCloudinary = async(priviousImageId)=>{
+    console.log(priviousImageId);
+    try {
+        if (!priviousImageId) return null
+
+        const deleteOpration = await cloudinary.uploader.destroy(priviousImageId)
+
+        console.log(deleteOpration);
+
+        if (!deleteOpration) {
+            console.log('Error cause file delete opration go faild');
+        }
+
+    } catch (error) {
+        console.log('Error cause file deletion opration go faild', error);        
+    }
+}
+
+export{uploadFileToCloudinary,deleteFileFromCloudinary}
